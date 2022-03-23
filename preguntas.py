@@ -251,14 +251,16 @@ def pregunta_09():
     for value in [row[4].split(',') for row in data]:
         aux.extend(value)
     aux = [value.split(':')[0] for value in aux]
-    dict = {} 
+    dic = {} 
     for row in aux:  
-        if row in dict.keys():
-            dict[row] += 1 
+        if row in dic.keys():
+            dic[row] += 1 
         else:
-            dict[row] = 1 
-    dict = list(dict.items()) 
-    return sorted(dict, key=lambda tup: tup[0])
+            dic[row] = 1 
+    dic = list(dic.items()) 
+    dic = sorted(dic, key=lambda tup: tup[0])
+    dic = dict(dic)
+    return dic
 
 def pregunta_10():
     """
