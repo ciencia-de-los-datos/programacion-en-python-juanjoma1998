@@ -9,8 +9,13 @@ básicas.
 
 Utilice el archivo `data.csv` para resolver las preguntas.
 
-
+data.csv
 """
+# Lectura del csv
+with open("data.csv", "r") as file:
+    data = file.readlines()
+data = [line.replace("\n", "") for line in data]
+data = [line.split("\t") for line in data]
 
 
 def pregunta_01():
@@ -21,8 +26,7 @@ def pregunta_01():
     214
 
     """
-    return
-
+    return sum(int(row[1]) for row in data)
 
 def pregunta_02():
     """
@@ -39,8 +43,14 @@ def pregunta_02():
     ]
 
     """
-    return
-
+    dict = {} 
+    for row in data: 
+        if row[0] in dict.keys():
+            dict[row[0]] += 1 
+        else:
+            dict[row[0]] = 1 
+    dict = list(dict.items()) 
+    return sorted(dict, key=lambda tup: tup[0]) 
 
 def pregunta_03():
     """
@@ -57,8 +67,14 @@ def pregunta_03():
     ]
 
     """
-    return
-
+    dict = {} 
+    for row in data:  
+        if row[0] in dict.keys():
+            dict[row[0]] += int(row[1]) 
+        else:
+            dict[row[0]] = int(row[1]) 
+    dict = list(dict.items()) 
+    return sorted(dict, key=lambda tup: tup[0]) 
 
 def pregunta_04():
     """
@@ -82,8 +98,14 @@ def pregunta_04():
     ]
 
     """
-    return
-
+    dict = {} 
+    for row in data:  
+        if row[2].split('-')[1] in dict.keys():
+            dict[row[2].split('-')[1]] += 1 
+        else:
+            dict[row[2].split('-')[1]] = 1 
+    dict = list(dict.items()) 
+    return sorted(dict, key=lambda tup: tup[0]) 
 
 def pregunta_05():
     """
@@ -100,8 +122,14 @@ def pregunta_05():
     ]
 
     """
-    return
-
+    dict = {} 
+    for row in data:
+        if row[0] in dict.keys():
+            dict[row[0]].append(int(row[1]))
+        else:
+            dict[row[0]] = [int(row[1])]
+    dict = [(key, max(dict[key]), min(dict[key])) for key in dict.keys()]
+    return sorted(dict, key=lambda tup: tup[0]) 
 
 def pregunta_06():
     """
@@ -125,8 +153,17 @@ def pregunta_06():
     ]
 
     """
-    return
-
+    aux = []
+    for value in [row[4].split(',') for row in data]:
+        aux.extend(value)
+    dict = {} 
+    for value in aux:
+        if value.split(':')[0] in dict.keys():
+            dict[value.split(':')[0]].append(int(value.split(':')[1]))
+        else:
+            dict[value.split(':')[0]] = [int(value.split(':')[1])]
+    dict = [(key, min(dict[key]), max(dict[key])) for key in dict.keys()]
+    return sorted(dict, key=lambda tup: tup[0]) 
 
 def pregunta_07():
     """
@@ -149,8 +186,14 @@ def pregunta_07():
     ]
 
     """
-    return
-
+    dict = {} 
+    for row in data:  
+        if int(row[1]) in dict.keys():
+            dict[int(row[1])].append(row[0]) 
+        else:
+            dict[int(row[1])] = [row[0]]
+    dict = list(dict.items()) 
+    return sorted(dict, key=lambda tup: tup[0]) 
 
 def pregunta_08():
     """
@@ -174,8 +217,15 @@ def pregunta_08():
     ]
 
     """
-    return
-
+    dict = {} 
+    for row in data:  
+        if int(row[1]) in dict.keys():
+            dict[int(row[1])].append(row[0]) 
+        else:
+            dict[int(row[1])] = [row[0]]
+    dict = list(dict.items()) 
+    dict = sorted(dict, key=lambda tup: tup[0]) # Ordeno las filas
+    return [(value[0], sorted(list(set(value[1])))) for value in dict] # ordeno las letras y regreso la lista
 
 def pregunta_09():
     """
@@ -197,8 +247,18 @@ def pregunta_09():
     }
 
     """
-    return
-
+    aux = []
+    for value in [row[4].split(',') for row in data]:
+        aux.extend(value)
+    aux = [value.split(':')[0] for value in aux]
+    dict = {} 
+    for row in aux:  
+        if row in dict.keys():
+            dict[row] += 1 
+        else:
+            dict[row] = 1 
+    dict = list(dict.items()) 
+    return sorted(dict, key=lambda tup: tup[0])
 
 def pregunta_10():
     """
@@ -218,8 +278,10 @@ def pregunta_10():
 
 
     """
-    return
-
+    aux = []
+    for row in data:
+        aux.append((row[0], len(row[3].split(',')), len(row[4].split(',')))) 
+    return aux
 
 def pregunta_11():
     """
@@ -239,8 +301,17 @@ def pregunta_11():
 
 
     """
-    return
-
+    dic = {}
+    for row in data:
+        for letra in row[3].split(','):
+            if letra in dic.keys():
+                dic[letra] += int(row[1])
+            else:
+                dic[letra] = int(row[1])
+    dic = list(dic.items())
+    dic = sorted(dic, key=lambda tup: tup[0])
+    dic = dict(dic)
+    return dic 
 
 def pregunta_12():
     """
@@ -257,4 +328,15 @@ def pregunta_12():
     }
 
     """
-    return
+    dic = {}
+    for row in data:
+        aux = row[4].split(',')
+        if row[0] in dic.keys():
+            dic[row[0]] += sum([int(value.split(':')[1]) for value in aux])
+        else:
+            dic[row[0]] = sum([int(value.split(':')[1]) for value in aux])
+
+    dic = list(dic.items())
+    dic = sorted(dic, key=lambda tup: tup[0])
+    dic = dict(dic)
+    return dic
